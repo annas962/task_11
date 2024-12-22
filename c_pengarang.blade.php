@@ -6,12 +6,18 @@
 
  @stop
  @section('content') {{-- Isi Konten form pengarang --}} 
+ @if($errors->any())
+ <div class="alert alert-danger">
+ <ul>
+ @foreach($errors->all() as $error)
+ <li>{{ $error }}</li> 
+@endforeach
+ </ul>
+ </div>
+ @endif
 
-
-@foreach($ar_pengarang as $p)
- <form action="{{ route('pengarang.update',$p->id) }}" method="POST">
+ <form action="{{ route('pengarang.store') }}" method="POST">
     @csrf
-    @method('put')
     <div class="form-group">
         <label>nama</label><input type="text" name="nama" class="form-control"/>
     </div>
@@ -22,15 +28,9 @@
         <label>hp</label><input type="text" name="hp" class="form-control"/>
     </div>
     <div class="form-group">
-        <label>foto</label><input type="file" name="foto" class="form-control"/>
+        <label>foto</label><input type="text" name="foto" class="form-control"/>
     </div>
-@endforeach
+
     <a href="{{ route('pengarang.index') }}"  class="btn btn-primary btn-md" role="button"><i class="fa fa-arrow-left"> back</i></a>
-    
+    <button type="submit" class="btn btn-primary">simpan</button>
  @stop
- @section('css')
-<link rel="stylesheet" href="css/admin_custom.css">
-@stop
-@section('js')
-<script> console.log('Hi'); </script>
-@stop

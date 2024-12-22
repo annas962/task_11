@@ -1,14 +1,20 @@
 @extends('adminlte::page') 
-@section('title', 'Data mahasantri') 
+@section('title', 'Data pengarang') 
 @section('content_header')
- <h1>Data mahasantri</h1>
+ <h1><i class="fa fa-user"> Data pengarang</i></h1>
  @stop
- @section('content') {{-- Isi Konten Data mahasantri --}} 
+ @section('content') {{-- Isi Konten Data pengarang --}}
+    @if(session('success'))
+    <div class="alert alert-info">
+        {{session('success') }}
+    </div>
+    @endif
 @php
- $ar_judul = ['No','nama','nim','jurusan','matakuliah','dosen pengajar','Action'];
- $no = 1; 
+    $ar_judul =  ['No','nama','email','hp','foto','Action'];
+    $no = 1; 
 @endphp
-<a href="{{ route('mahasantri.create') }}"  class="btn btn-primary btn-md" role="button">Tambah mahasantri</a><br/><br/>
+<a href="{{ route('pengarang.create') }}"  class="btn btn-primary btn-md" role="button"><i class= fa fa-book></i>Tambah</a> &nbsp
+<a href="{{ url('pengarangpdf') }}"  class="btn btn-primary btn-md" role="button"><i class= fa fa-book></i>export PDF</a>
 <div class="card">
 <div class="card-body">
 <table id="example1" class="table table-bordered table-striped">
@@ -20,24 +26,23 @@
     </tr>
     </thead>
  <tbody>
- @foreach($ar_mahasantri as $mhs)
+ @foreach($ar_pengarang as $p)
  <tr>
  <td>{{ $no++ }}</td>
- <td>{{ $mhs->nama }}</td>
- <td>{{ $mhs->nim }}</td>
- <td>{{ $mhs->jrs }}</td>
- <td>{{ $mhs->mk }}</td>
- <td>{{ $mhs->dsn }}</td>
-<td>
-<form action="{{ route('mahasantri.destroy',$mhs->id) }}" method="POST">
+ <td>{{ $p->nama }}</td>
+ <td>{{ $p->email }}</td>
+ <td>{{ $p->hp }}</td>
+ <td>{{ $p->foto }}</td>
+ 
+ <td>
+    <form action="{{ route('pengarang.destroy',$p->id) }}" method="POST">
         @csrf
         @method('delete')
-        <a href="{{ route('mahasantri.show',$mhs->id) }}" class="btn btn-info"><i class="fa fa-eye"></i></a>
-        <a href="{{ route('mahasantri.edit',$mhs->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+        <a href="{{ route('pengarang.show',$p->id) }}" class="btn btn-info"><i class="fa fa-eye"></i></a>
+        <a href="{{ route('pengarang.edit',$p->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
         <button class="btn btn-danger" onlick="return confirm('anda yakin data dihapus?')"><i class="fa fa-trash"></i></button> 
     </form>
-</td>
- 
+ </td>
  </tr>
  @endforeach
  </tbody>
@@ -45,6 +50,7 @@
  </div>
  </div>
  @stop
+
  @section('css')
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link rel="stylesheet" href="css/admin_custom.css">
@@ -78,9 +84,18 @@
 <script>
   $(function () {
     $("#example1").DataTable({
-      "responsive": true, "lengthChange": true, "autoWidth": true,
+      "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-  });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
 </script>
 @stop

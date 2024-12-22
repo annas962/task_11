@@ -6,27 +6,34 @@
 
  @stop
  @section('content') {{-- Isi Konten form pengarang --}} 
-
-
-@foreach($ar_pengarang as $p)
- <form action="{{ route('pengarang.update',$p->id) }}" method="POST">
+ @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li> 
+        @endforeach
+        </ul>
+    </div>
+ @endif
+ <form action="{{ route('pengarang.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method('put')
     <div class="form-group">
-        <label>nama</label><input type="text" name="nama" class="form-control"/>
+        <label>Nama</label><input type="text" name="nama" class="form-control"/>
+
     </div>
     <div class="form-group">
-        <label>email</label><input type="text" name="email" class="form-control"/>
+        <label>Email</label><input type="email" name="email" class="form-control"/>
     </div>
     <div class="form-group">
         <label>hp</label><input type="text" name="hp" class="form-control"/>
     </div>
+
     <div class="form-group">
         <label>foto</label><input type="file" name="foto" class="form-control"/>
     </div>
-@endforeach
     <a href="{{ route('pengarang.index') }}"  class="btn btn-primary btn-md" role="button"><i class="fa fa-arrow-left"> back</i></a>
-    
+    <button type="submit" class="btn btn-primary">simpan</button>
+   
  @stop
  @section('css')
 <link rel="stylesheet" href="css/admin_custom.css">
@@ -34,3 +41,9 @@
 @section('js')
 <script> console.log('Hi'); </script>
 @stop
+@section('footer')
+            <div class="float-right d-none d-sm-block">
+                <b>@</b> Who Am I
+            </div>
+            <strong>&copy; {{ date('Y') }} <a href="#">Software Development</a>.</strong> All rights reserved.
+    @stop
